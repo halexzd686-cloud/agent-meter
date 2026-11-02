@@ -1,0 +1,33 @@
+name: Bug report
+description: Report a reproducible problem without account secrets
+title: "[Bug] "
+body:
+  - type: markdown
+    attributes:
+      value: "不要上传 API Key、令牌、账户邮箱、完整日志或私人对话。安全漏洞请按 SECURITY.md 私下报告。"
+  - type: input
+    id: version
+    attributes:
+      label: Agent Meter version
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: OS / architecture / display scaling
+    validations:
+      required: true
+  - type: input
+    id: provider
+    attributes:
+      label: Agent app and version
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps, expected behavior and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: errors
+    attributes:
+      label: Redacted error text

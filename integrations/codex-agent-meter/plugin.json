@@ -1,0 +1,10 @@
+{
+  "name": "agent-meter-events",
+  "version": "0.1.0",
+  "description": "Send task-state metadata to the local Agent Meter widget without changing tool approval decisions",
+  "extensions": {
+    "com.openai": {
+      "hooks": "./hooks/hooks.json"
+    }
+  }
+}

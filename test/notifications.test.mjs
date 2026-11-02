@@ -1,0 +1,20 @@
+import {temporaryDirectory} from './helpers/temp.mjs';
+import test from'node:test';import assert from'node:assert/strict';import{MeterState}from'../src/core/state.mjs';import{validateEvent}from'../src/core/contracts.mjs';import{parseCodexRecord}from'../src/adapters/codex.mjs';
+const now=Date.parse('2026-10-27T10:00:00Z');const event=(state,scope,offset=0)=>({provider:'codex',type:'task.state',observedAt:new Date(now+offset).toISOString(),task:{id:'whole-task',title:'完整任务',state,...(scope?{completionScope:scope}:{})}});
+function fixture(){const meter=new MeterState({clock:()=>now+10000}),attention=[];meter.on('attention',e=>attention.push(e));return{meter,attention}}
+test('reply and substep completions never notify',()=>{const{meter,attention}=fixture();for(let i=0;i<10;i++){meter.apply(event('thinking',null,i*2));meter.apply(event('completed','turn',i*2+1))}assert.equal(attention.length,0)});
+test('unspecified completion is silent until task completion is explicit',()=>{const{meter,attention}=fixture();meter.apply(event('running'));meter.apply(event('completed'));assert.equal(attention.length,0);meter.apply(event('completed','task'));assert.equal(attention.length,1)});
+test('explicit whole-task completion notifies once despite retries or later steps',()=>{const{meter,attention}=fixture();meter.apply(event('thinking'));meter.apply(event('completed','task',1));meter.apply(event('completed','task',2));meter.apply(event('thinking',null,3));meter.apply(event('completed','task',4));assert.equal(attention.length,1)});
+test('authorization waiting remains actionable',()=>{const{meter,attention}=fixture();meter.apply(event('thinking'));meter.apply(event('completed','turn',1));meter.apply(event('waiting',null,2));assert.equal(attention.length,1);assert.equal(attention[0].task.state,'waiting')});
+test('historical whole-task completion is silent and cannot notify on replay',()=>{const{meter,attention}=fixture();meter.apply(event('completed','task'),{historical:true});meter.apply(event('completed','task',1));assert.equal(attention.length,0)});
+test('Codex task_complete and turn_complete represent reply end, not whole-task end',()=>{for(const type of['task_complete','turn_complete']){const result=parseCodexRecord({timestamp:new Date(now).toISOString(),type:'event_msg',payload:{type}},'session');assert.equal(result[0].task.state,'idle');assert.equal(result[0].task.completionScope,'turn')}});
+test('invalid completion scope is rejected instead of enabling a popup',()=>{assert.throws(()=>validateEvent(event('completed','everything'),now+10000));assert.equal(validateEvent(event('completed','task'),now+10000).task.completionScope,'task')});
+
+test('both shipped Stop hooks report idle without task-complete scope',async t=>{
+ const{startBridge}=await import('../src/core/bridge.mjs');const{mkdtemp,writeFile,unlink,rmdir}=await import('node:fs/promises');const{spawn}=await import('node:child_process');const{fileURLToPath}=await import('node:url');const path=await import('node:path');
+ const directory=await temporaryDirectory(t,'hook'),events=[];const bridge=await startBridge({token:'hook-test-token',onEvent:e=>events.push(e)});await writeFile(path.join(directory,'bridge.json'),JSON.stringify({port:bridge.port,token:bridge.token}));t.after(()=>bridge.close());
+ for(const script of['../scripts/codex-hook.mjs','../integrations/codex-agent-meter/hooks/report.mjs']){
+  await new Promise((resolve,reject)=>{const child=spawn(process.execPath,[fileURLToPath(new URL(script,import.meta.url))],{env:{...process.env,AGENT_METER_DATA_DIR:directory},windowsHide:true,stdio:['pipe','pipe','pipe']});let output='';child.stdout.on('data',d=>output+=d);child.stderr.resume();child.once('error',reject);child.once('exit',code=>{try{assert.equal(code,0);assert.equal(output,'{}');resolve()}catch(e){reject(e)}});child.stdin.end(JSON.stringify({hook_event_name:'Stop',session_id:'test-session',last_assistant_message:'PRIVATE'}))});
+ }
+ assert.equal(events.length,2);for(const e of events){assert.equal(e.task.state,'idle');assert.equal(e.task.completionScope,'turn');assert.ok(!JSON.stringify(e).includes('PRIVATE'))}
+});

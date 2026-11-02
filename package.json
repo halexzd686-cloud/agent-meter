@@ -1,0 +1,98 @@
+{
+  "name": "agent-meter",
+  "productName": "Agent Meter",
+  "version": "0.2.1-alpha.1",
+  "private": true,
+  "type": "module",
+  "main": "electron/main.mjs",
+  "description": "Agent quota and activity desktop rail",
+  "scripts": {
+    "start": "electron .",
+    "demo": "electron . --demo",
+    "test": "node --test test/*.test.mjs",
+    "pack": "electron-builder --win --x64 --dir --publish never",
+    "dist": "electron-builder --win portable --x64 --publish never",
+    "bridge": "node scripts/emit-event.mjs",
+    "installer": "electron-builder --win nsis --x64 --publish never",
+    "test:renderer": "electron electron/smoke.mjs",
+    "mac:dmg": "electron-builder --mac dmg --arm64 --publish never",
+    "test:clean": "node scripts/test-clean.mjs",
+    "check:release": "node scripts/check-release.mjs",
+    "audit:check": "node scripts/check-dependencies.mjs",
+    "release:checksums": "node scripts/release-checksums.mjs"
+  },
+  "devDependencies": {
+    "electron": "45.0.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "io.agentmeter.desktop",
+    "productName": "Agent Meter",
+    "electronVersion": "45.0.0",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "electron/**",
+      "src/**",
+      "renderer/**",
+      "assets/**",
+      "scripts/emit-event.mjs",
+      "scripts/codex-hook.mjs",
+      "package.json",
+      "integrations/**",
+      "!electron/smoke.mjs",
+      "LICENSE",
+      "THIRD_PARTY_NOTICES.md",
+      "PRIVACY.md"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "electron/wake-app.ps1",
+      "scripts/**",
+      "integrations/**"
+    ],
+    "win": {
+      "target": "portable",
+      "icon": "assets/app.ico",
+      "signExecutable": false
+    },
+    "portable": {
+      "artifactName": "Agent-Meter-${version}-win-x64.exe"
+    },
+    "npmRebuild": false,
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "createStartMenuShortcut": true,
+      "artifactName": "Agent-Meter-Setup-${version}.exe"
+    },
+    "mac": {
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "arm64"
+          ]
+        }
+      ],
+      "icon": "assets/app.icns",
+      "category": "public.app-category.developer-tools",
+      "identity": "-",
+      "hardenedRuntime": true,
+      "entitlements": "build/entitlements.mac.plist",
+      "entitlementsInherit": "build/entitlements.mac.plist",
+      "extendInfo": {
+        "LSUIElement": true
+      },
+      "artifactName": "Agent-Meter-${version}-mac-arm64.dmg"
+    }
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=24.18.0 <25"
+  },
+  "author": "Agent Meter contributors"
+}

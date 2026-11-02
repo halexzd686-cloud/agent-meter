@@ -1,0 +1,31 @@
+{
+  "library": "Lobe Icons",
+  "license": "MIT",
+  "retrieved": "2026-10-25",
+  "icons": [
+    {
+      "name": "deepseek",
+      "source": "https://raw.githubusercontent.com/lobehub/lobe-icons/master/src/DeepSeek/components/Mono.tsx",
+      "sha256": "5851edb190ce5da18605a1eefff32f313087595e21279b38ae8d328216741fac",
+      "paths": 1
+    },
+    {
+      "name": "kimi",
+      "source": "https://raw.githubusercontent.com/lobehub/lobe-icons/master/src/Kimi/components/Mono.tsx",
+      "sha256": "69616e217c2e84ff611a0e411d67101ba06f1659abc5db3b0431eec631056f6b",
+      "paths": 2
+    },
+    {
+      "name": "codex",
+      "source": "https://raw.githubusercontent.com/lobehub/lobe-icons/master/src/Codex/components/Mono.tsx",
+      "sha256": "64a8384c89e22e834e679390c730a6b1fb30818ee98ddf398f6de6315cffe2bd",
+      "paths": 1
+    },
+    {
+      "name": "zai",
+      "source": "https://raw.githubusercontent.com/lobehub/lobe-icons/master/src/ZAI/components/Mono.tsx",
+      "sha256": "d4bb6228bd9d43d2705e6ec07e9c53d5723d77ad273c25da04ca3f1379019880",
+      "paths": 1
+    }
+  ]
+}

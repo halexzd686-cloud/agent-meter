@@ -1,0 +1,29 @@
+{
+  "exceptions": [
+    {
+      "id": "GHSA-g3hv-75wg-m249",
+      "reviewedOn": "2026-11-02",
+      "expires": "2026-12-02",
+      "maxSeverity": "moderate",
+      "developmentOnly": true,
+      "packages": [
+        "@electron/asar",
+        "@electron/universal",
+        "app-builder-lib",
+        "dir-compare",
+        "dmg-builder",
+        "ejs",
+        "electron-builder",
+        "electron-builder-squirrel-windows",
+        "electron-winstaller",
+        "filelist",
+        "glob",
+        "jake",
+        "minimatch",
+        "rimraf",
+        "temp"
+      ],
+      "reason": "Temporary build-only exception. The upstream report requires attacker-controlled glob patterns with optimizationLevel >= 2; this project uses repository-owned static globs, and the inspected builder matcher uses the default level 1. Re-review on any build-chain update. See docs/DEPENDENCY_SECURITY.md."
+    }
+  ]
+}
