@@ -13,7 +13,7 @@
 | 安装包内容 | 版本、关键源码、应用 MIT/隐私/第三方声明和 Electron/Chromium 许可校验通过；测试、缓存与账户配置未纳入 |
 | 源码门禁 | 无构建二进制纳入、无常见秘密模式；标签版本不匹配的负向检查正确失败 |
 | npm 审计策略 | 仍报告 15 个中危构建依赖节点；只有已复核、限定、未过期的例外通过；生产依赖/高危/未知/过期风险的回归用例均通过 |
-| GitHub Actions | YAML 解析通过，官方 Action 提交 SHA 固定；Windows 与 Mac 原生构建、Mac 签名/arm64/DMG 校验和 Draft prerelease 流程已配置，未远程执行 |
+| GitHub Actions | 首次远程运行 [41399831003](https://github.com/halexzd686-cloud/agent-meter/actions/runs/41399831003) 通过：Windows / macos-15 的完整与干净测试、安装包内容验证、Mac arm64 / codesign / DMG 验证均成功。标签发布流程另行执行 |
 
 安装包为 dist/Agent-Meter-Setup-0.2.1-alpha.1.exe，哈希在同名 .sha256 文件。dist、全部旧版本目录、缓存、依赖和私密文件被 Git 忽略。包没有 Windows 开发者签名。
 
@@ -21,9 +21,9 @@
 
 - 尚未执行新安装包的安装向导、升级/卸载和在其他 Windows 用户账户下的原生交互验收。
 - 没有在本轮创建真实 Agent 任务测试新版本的通知送达、前台唤醒、多屏拖动或 DPI。离屏与状态契约测试不替代这些检查。
-- 没有远程 Actions 实际运行记录；没有真实 Mac 启动、Keychain、通知、全屏空间和账户适配验收，也未产出此版本的 Mac DMG。旧 0.2.0 DMG 是历史测试包。
+- 远程 CI 已产出此版本的 Mac arm64 DMG 并通过结构校验；没有真实 Mac 启动、Keychain、通知、全屏空间和账户适配验收。旧 0.2.0 DMG 是历史测试包。
 - Kimi Code 1.1.4 / 本地服务 2.3.2 的 Windows 真实额度核对属于 2026-10-27 历史记录；本轮没有读取真实账户。本地协议兼容性可能随原应用更新变化。
 - ZCode、Claude、Cursor 的原生额度适配仍未实现；DeepSeek 仅为官方 API 余额。
 - npm 公告没有被冒充为“已修复”；限定例外在 2026-12-02 到期，详见 DEPENDENCY_SECURITY.md。
 
-本机 Git 因沙箱目录所有者与桌面账户不同，已仅为当前项目登记精确 safe.directory；未更改 Git 用户身份、未放开其他目录。源码仓库与工作目录的外围缓存分开，未连接或推送远程。
+本机 Git 因沙箱目录所有者与桌面账户不同，已仅为当前项目登记精确 safe.directory；未更改 Git 用户身份、未放开其他目录。源码仓库与工作目录的外围缓存分开，已推送 https://github.com/halexzd686-cloud/agent-meter 。最终公开与发布状态以仓库页面为准。

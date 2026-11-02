@@ -94,5 +94,13 @@
   "engines": {
     "node": ">=24.18.0 <25"
   },
-  "author": "Agent Meter contributors"
+  "author": "Agent Meter contributors",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/halexzd686-cloud/agent-meter.git"
+  },
+  "homepage": "https://github.com/halexzd686-cloud/agent-meter",
+  "bugs": {
+    "url": "https://github.com/halexzd686-cloud/agent-meter/issues"
+  }
 }

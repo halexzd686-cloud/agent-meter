@@ -2,7 +2,7 @@
 
 砂白侘寂风的桌面 Agent 额度与任务状态小组件。Windows 优先；macOS Apple Silicon 为实验支持。当前源码版本 **0.2.1-alpha.1**，MIT 许可。
 
-当前尚未关联公开 GitHub 远程仓库，暂无公共安装下载地址。发布后从本仓库 Releases 下载与版本标签一致的安装包和 SHA256；旧的本机 0.1.x Windows / 0.2.0 Mac 测试包不是当前源码的发布产物。
+源码仓库：[halexzd686-cloud/agent-meter](https://github.com/halexzd686-cloud/agent-meter)。安装包与 SHA256 见 [Releases](https://github.com/halexzd686-cloud/agent-meter/releases)，以实际已发布列表为准。当前是 Alpha 测试版；旧的本机 0.1.x Windows / 0.2.0 Mac 测试包不是当前源码的发布产物。
 
 ## 当前支持范围
 
@@ -74,7 +74,7 @@ npm run release:checksums
 
 输出统一到 dist/，源码和安装包共用 package.json 的版本。Start-Agent-Meter.cmd 只打开当前 dist/win-unpacked 目录版，不回退启动旧版本。Windows 上不承诺原生跨编译 Mac DMG；使用 Mac runner。详细发布流程见 [RELEASING](docs/RELEASING.md)。
 
-CI 已配置 Windows 与 macOS 原生构建、干净测试、依赖门禁和产物哈希；只有实际运行记录才能证明对应平台通过。带版本标签的工作流仅创建待人工审核的 Draft prerelease，不直接公开正式版。
+CI 已配置 Windows 与 macOS 原生构建、干净测试、依赖门禁和产物哈希；首次原生构建已通过，运行记录见 [Actions](https://github.com/halexzd686-cloud/agent-meter/actions)。CI 成功不代替真实账户与桌面交互验收。带版本标签的工作流仅创建待人工审核的 Draft prerelease，不直接公开正式版。
 
 ## 文档与贡献
 
